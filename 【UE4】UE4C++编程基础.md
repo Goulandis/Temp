@@ -8,15 +8,17 @@ tags:
 
 此学习记录在Unity3d的基础之上学习
 
-# 一、UE4目录文件结构
+# 一、UE4的文件结构
+
+## 1.安装目录结构
 
 ![](【UE4】UE4基础/Snipaste_2019-10-15_10-16-42.png)
 
-## 1.DirectXRedist
+### DirectXRedist
 
  DirectXRedist是DirectX文件所在的地方。这个文件夹也包括了安装DirectX的安装包。
 
-## 2.Launcher
+### Launcher
 
 Launcher是引擎启动器所在文件夹。Launcher包含了如下子文件夹：
 
@@ -25,7 +27,7 @@ Launcher是引擎启动器所在文件夹。Launcher包含了如下子文件夹�
 - PatchStaging：这里保存了下载UE4版本的临时数据。
 - VaultCache：这个文件夹包含了所有你从商城购买的资源的缓存。
 
-## 3.4.10
+### 4.10
 
 4.10文件夹有如下子文件夹：
 
@@ -34,6 +36,58 @@ Launcher是引擎启动器所在文件夹。Launcher包含了如下子文件夹�
 - Templates：UE4提供了不同类型游戏的模版，这个文件夹包含了不同类型游戏的内容和源代码
 
 不同UE4版本目录结构可能有所不同，但大体上不会有太大差别、
+
+## 2.项目目录结构
+
+![](【UE4】UE4基础/Snipaste_2019-10-16_17-06-01.png)
+
+### .vs
+
+VS的智能解读和智能提示的缓存
+
+### Binaries
+
+编辑器热加载类的二进制文件
+
+### Config
+
+Config是配置文件，保存一些偏好设置等配置
+
+### Content
+
+Content文件与引擎里的Content文件对应
+
+Content文件的目录结构
+
+![](【UE4】UE4基础/Snipaste_2019-10-16_17-10-46.png)
+
+其中**Collections**和**Developers**主要存放我们在使用引擎的时候生成的一些链接文件和临时文件。
+
+在引擎中可以在View Options中选择是否在引擎理显示这两个文件夹，默认情况下，这两个文件夹是不显示的。
+
+![](【UE4】UE4基础/Snipaste_2019-10-16_17-13-58.png)
+
+**StartContent**文件就是我们创建工程时导入新手包
+
+### Intermediate
+
+Intermediate文件夹存放我们在引擎中构建的一些中间文件，如：光照的构建文件等等。
+
+### Saved
+
+Saved中保存项目的备份文件和开发日志
+
+### Source
+
+Source对应引擎中C++Class文件夹
+
+### ARP.sln
+
+VS解决方案的文件
+
+### ARP
+
+项目的启动文件
 
 # 二、UE4的工作界面
 
