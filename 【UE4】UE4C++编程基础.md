@@ -362,13 +362,7 @@ Marketplace
 
 # 四、UE4中的类
 
-## 1.Actor类
-
-Actor类具有组件挂载能力，即所有需要挂载组件的对象都需要继承Actor类，但是有一点是需要纠正的，Actor类不是必须的，说“Actor类是一切实体的基类”这种说法严格意义上来说是不正确的，比如：做一个管理类对象就不需要挂在其他的组件。
-
-还需要注意的一点是，UE4中的component和Unity中的component是极大的区别的，在UE4中一个场景实体对应一个类，而Unity中一个场景实体可以挂载多个脚本组件，一个脚本组件就是一个类。
-
-## 2.UObject类
+## 1.UObject类
 
 Uobject类提供以下功能：
 
@@ -418,6 +412,12 @@ C++的内存管理是由程序员完成的。因此对象管理一直是一个�
 
 - 构造函数被调用的时候， WOrld不一定存在。 Get World0返回值有可能为空！
 
+## 2.Actor类
+
+Actor类具有组件挂载能力，即所有需要挂载组件的对象都需要继承Actor类，但是有一点是需要纠正的，Actor类不是必须的，说“Actor类是一切实体的基类”这种说法严格意义上来说是不正确的，比如：做一个管理类对象就不需要挂在其他的组件。
+
+还需要注意的一点是，UE4中的component和Unity中的component是极大的区别的，在UE4中一个场景实体对应一个类，而Unity中一个场景实体可以挂载多个脚本组件，一个脚本组件就是一个类。
+
 ## 3.Pawn类
 
  Pawn类是一个代表你或者代表电脑的人工智能的游戏对象，它是可以在屏幕上控制的游戏对象。Pawn类是从Actor类中基础的，它可以通过玩家的设备（键盘、鼠标等）控制或者被人工智能脚本控制。如果它是被玩家控制的，我们通常称之为controller（控制器）；如果它是被人工智能脚本控制的，我们通常称之为AI（Artificial Intelligence，人工智能），如果你经常玩游戏，那些NPC（Non-player Characters，非玩家角色）就通常具有AI行为。 
@@ -430,7 +430,68 @@ Character类代表一个角色，它继承自Pawn类。那么，什么时候该�
 
 Controller是漂浮在 Pawn/Character之上的灵魂。它操纵着Pawn和 Character的行为。 Controller可以是AI， AI Controller类，你可以在这个类中使用虚幻引擎优秀的行为树/EQS环境查询系统。同样也可以是玩家， Player Controller类。你可以在这个类中绑定输入，然后转化为对Pawn的指令。为何虚幻引擎采用这样的设计。Epic给出的理由非常简单:“不同的怪物也许会共享同样的 Controller，从而获得类似的行为”。其实， Controller抽象掉了“怪物行为”，也就是扮演了有神论者眼中“灵魂”的角色。既然是灵魂，那么肉体就不唯一，因此灵魂可以通过 Possess/Un Possess来控制一个肉体，或者从一个肉体上离开。
 
-# 五、C++编程
+## 6.各个类之间的层级关系
+
+![](【UE4】UE4基础/Snipaste_2019-10-16_21-27-20.png)
+
+# 五、UE4的反射和垃圾回收
+
+UE4使用C++语言进行开发，但是C++并不支持反射和垃圾回收机制，所以UE4便自己实现了反射和垃圾回收。
+
+### 反射
+
+UE4使用一系列的宏来实现反射，在反射中用的宏主要有
+
+| 宏        | 对应的反射对象 |
+| --------- | -------------- |
+| UCLASS    | C++类          |
+| UFUNCTION | 函数           |
+| UPROPERTY | 成员变量       |
+| USTRUCT   | 结构体         |
+
+<font color = red>要使用这些宏，必须包含头文件`#include "MyActor.generated.h"`，并且这个头文件还必须放在左后一位</font>。
+
+### UE4是如何实现反射的呢？
+
+我们要想要让某一块代码块可以被反射，我们就必须在这个代码块中使用上面的宏，如：我们想要某个类可以被反射，那么就必须在类前添加宏`UCLASS()`，并且面的函数，成员变量，结构体前也必须添加相应的宏。当我们添加了宏后，UE4在编译时会调用中头文件`.generate.h`中相应宏定义有关反射的方法，并通过Unreal Build Tool(UBT)和Unreal Header Tool(UHT)两个工具生成一个`.generate.cpp`文件，`.generate.h`文件则是一个包含了反射数据的C++代码。如此UE4便可以通过`.generate.cpp`来获取元数据。
+
+### 垃圾回收
+
+UE4的垃圾回收的使用有如下几种方式：
+
+**继承自UObject类的类对象**
+
+我们可以直接在成员变量前引入宏<font color=red>UPROPERTY()</font>，这个宏不仅可以标记反射还可以为垃圾回收做标记。
+
+我们也可以是使用<font color=red>TWeakObjectPtr</font>指针，TWeakObjectPtr是一个弱指针，通常定义在类的内部用来操纵堆区中的对象。TWeakObjectPtr是一个泛型指针，使用时需要指定类型参数，如：
+
+```
+TWeakObjectPtr<ClassName> tw;
+```
+
+**局部的UObject类对象**
+
+有时我们可能在函数中定义一个局部的UObject对象，为了防止对象被UObject的回收机制回收，我们应当使用<font color=red>AddToRoot()</font>来锁定对象，用完后使用<font color=red>RemoveFromRoot()</font>来移除锁定。
+
+**不继承自UObject和UStruct的结构体和类**
+
+这种结构体我们使用<font color=red>TSharedPtr</font>指针来引用堆区的对象，TSharedPtr也是一个泛型指针，使用时也需要指定类型参数。
+
+如果我们想要使用引用而不是指针则使用TSharedRef，如：
+
+```
+TSharedRef<FMyCustom> MyCustom = MakeShared<FMyCustom>(); 
+```
+
+此时M有Custom就是`MakeShared<FMyCustom>()`返回对象的引用。
+
+我们也可以使用<font color=red>TWeakPtr</font>指针，TWeakPtr指针的效果和TWeakObjectPtr指针的效果是一致的，只是TweakPtr用于非UObject类对象。
+
+**当一个不继承自UObject的结构体中出现了UObject对象时**
+
+这种情况下，结构体可以正常访问，但是结构体里的UObject对象会由于UObject的回收机制，在过一段时间后被销毁，从而导致这个对象无法访问和出现野指针的情况，UE4则使用<font color=red>FGCObject</font>类来解决这种情况，我们只需让这种情况下的结构体继承自FGCObject类积即可。
+
+# 六、C++编程
 
 ## 1.使用Unreal Editor创建C++类
 
