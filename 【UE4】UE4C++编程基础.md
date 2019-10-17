@@ -534,6 +534,8 @@ TSharedRef<FMyCustom> MyCustom = MakeShared<FMyCustom>();
 
 ![](【UE4】UE4基础/Snipaste_2019-10-16_10-06-16.png)
 
+上图有一个要注意的地方，我们在创建类是可以选择后面的公有与私有，或者都不选，选择公有或私有都会在创建一个C++Class/ProjectName文件夹下创建一个Public文件夹存放我们创建的类，而在VS中则会创建一个public文件夹存放.h文件，创建一个private文件夹存放.cpp文件，如果都不选，则.cpp和.h文件都存放在Source文件夹下。
+
 ![](【UE4】UE4基础/Snipaste_2019-10-16_10-07-00.png)
 
 创建的C++类的`.h`文件的结构
@@ -764,7 +766,27 @@ UPROPRETY(meta=(ClampMin=-5.0f,ClampMax=5.0f,UIMin=-5.0f,UIMax=5.0f))
 
 UFUNCTION()宏也提供了元数据说明符，元数据说明符可以对参数做一些限制，这里不再列出，详细的说明参官方文档： https://docs.unrealengine.com/zh-CN/Programming/UnrealArchitecture/Reference/Metadata/index.html 
 
-# 八、常用函数
+# 八、UE4的碰撞检测
+
+## 1.添加碰撞体
+
+UE4中碰撞体只能为模型添加，单独创建的Actor类是没有办法添加碰撞体的，我们要给Actor添加碰撞体就必须先给予Actor一个mesh组件，然后在这个组件上赋予模型，然后再在模型上添加碰撞体，这样Actor便拥有了碰撞体。
+
+UE4提供多种生成碰撞体的方法
+
+![](【UE4】UE4基础\Snipaste_2019-10-17_21-18-55.png)
+
+## 2.物理碰撞
+
+在UE4中想要启用物理碰撞相对来说比较简单，我们秩序将蓝图类中physics下的Simulate Physics勾选上，游戏物体便既有了物理属性。
+
+## 3.碰撞通道
+
+
+
+## 4.碰撞检测
+
+# 九、常用函数
 
 | 函数名                                          | 作用                                                         |
 | ----------------------------------------------- | ------------------------------------------------------------ |
@@ -774,7 +796,7 @@ UFUNCTION()宏也提供了元数据说明符，元数据说明符可以对参数
 | *UStaticMeshComponent->AddForce(FVector force)  | 给当前Actor添加力，需要使用UStaticMeshComponent指针来调用，且需要包含#include "Components/StaticMeshComponent.h"，否则无法调用，可以使用AddForce(FVector force，"NAME_None"，bool b)通过bool值来确定是否忽略质量影响 |
 | *UStaticMeshComponent->AddTorque(FVector force) | 给当前Actor添加力矩，需要使用UStaticMeshComponent指针来调用，且需要包含#include "Components/StaticMeshComponent.h"，否则无法调用，可以使用AddTorque(FVector force，"NAME_None"，bool b)通过bool值来确定是否忽略质量影响 |
 
-# 九、UE4Z中一些常用的类
+# 十、UE4Z中一些常用的类
 
 | 类命                 | 含义             |
 | -------------------- | ---------------- |
