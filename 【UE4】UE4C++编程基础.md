@@ -550,7 +550,17 @@ TSharedRef<FMyCustom> MyCustom = MakeShared<FMyCustom>();
 
 <font color=blue> UE4中有一个及其操蛋的问题，就是宏GENERATED_BODY()似乎有固定位置（行数）限制，高于或低于这个位置时，VS编译器都会在GENERATED_BODY()处报红，但奇怪的是在UE4引擎中运行时不会出错。可能时UE4对VS的支持还不够彻底。</font>
 
-## 2.UE4类的命名规则
+## 2.C++类的删除
+
+UE4引擎自身不提供C++的删除功能，但是有时候我们需要删除一些类的时候怎么办呢？
+
+唯一的办法就是建立在文件操作上了，步骤如下：
+
+- 删除项目目录下Source文件夹下需要删除类的`.cpp`和`.h`文件
+- 清空Binaries/win64文件夹下的所有内容，切记不要整个文件夹都删掉，否则整个项目将无法打开，原因未知
+- 双击ARP文件，启动项目让引擎重新加载配置
+
+## 3.UE4类的命名规则
 
 UE4为一些常用类的命名添加了一些命名前缀，<font color=red> 如果我们不写这些前缀，UE4会编译错误</font>。
 
@@ -562,7 +572,7 @@ UE4为一些常用类的命名添加了一些命名前缀，<font color=red> �
 | S    | Slate控件相关类                    |
 | H    | HitResult相关类                    |
 
-## 3.类的使用
+## 4.类的使用
 
 ### 继承自UObject类的类
 
@@ -611,6 +621,8 @@ UPROPERTY(BlueprintReadWrite)里的参数不是唯一的，<font color=red> Blue
 经过以上步骤我们的继承自UObject类的类便可以通过对应的蓝图类在关卡蓝图中使用了，使用BeginPlay节点开始程序，使用Construct节点来实例化我们的蓝图类，通过实例化出来的对象便可调用类中的资源了。如：
 
 ![](【UE4】UE4基础/Snipaste_2019-10-17_13-46-52.png)
+
+
 
 # 七、UE4宏
 
@@ -766,13 +778,15 @@ UFUNCTION()宏也提供了元数据说明符，元数据说明符可以对参数
 
 # 八、常用函数
 
-| 函数名                                          | 作用                                                         |
-| ----------------------------------------------- | ------------------------------------------------------------ |
-| CreateDefaultSubobject<T>(TEXT(string str));    | 为当前Actor创建一个静态网格，报错时提示字符串str             |
-| SetActorLocation(FVector postion)               | 设置当前Actor的位置坐标，FVector是UE4中的三维向量类          |
-| AddActorLocalOffset(FVector offset)             | 设置当前Actor的移动偏移量                                    |
-| *UStaticMeshComponent->AddForce(FVector force)  | 给当前Actor添加力，需要使用UStaticMeshComponent指针来调用，且需要包含#include "Components/StaticMeshComponent.h"，否则无法调用，可以使用AddForce(FVector force，"NAME_None"，bool b)通过bool值来确定是否忽略质量影响 |
-| *UStaticMeshComponent->AddTorque(FVector force) | 给当前Actor添加力矩，需要使用UStaticMeshComponent指针来调用，且需要包含#include "Components/StaticMeshComponent.h"，否则无法调用，可以使用AddTorque(FVector force，"NAME_None"，bool b)通过bool值来确定是否忽略质量影响 |
+| 函数名                                                    | 作用                                                         |
+| --------------------------------------------------------- | ------------------------------------------------------------ |
+| CreateDefaultSubobject<T>(TEXT(string str));              | 为当前Actor创建一个静态网格，报错时提示字符串str             |
+| SetActorLocation(FVector postion)                         | 设置当前Actor的位置坐标，FVector是UE4中的三维向量类          |
+| AddActorLocalOffset(FVector offset)                       | 设置当前Actor的移动偏移量                                    |
+| *UStaticMeshComponent->AddForce(FVector force)            | 给当前Actor添加力，需要使用UStaticMeshComponent指针来调用，且需要包含#include "Components/StaticMeshComponent.h"，否则无法调用，可以使用AddForce(FVector force，"NAME_None"，bool b)通过bool值来确定是否忽略质量影响 |
+| *UStaticMeshComponent->AddTorque(FVector force)           | 给当前Actor添加力矩，需要使用UStaticMeshComponent指针来调用，且需要包含#include "Components/StaticMeshComponent.h"，否则无法调用，可以使用AddTorque(FVector force，"NAME_None"，bool b)通过bool值来确定是否忽略质量影响 |
+| RootComponent=CreateDefaultSubobject<T>(Text(string str)) | 为当前的Actor(继承自Actor的类都属于Actor类)设置根节点，并命名为str，RootComponent是UE4提供一个载入根节点的容器 |
+| *T->SetupAttachment(T root)                               | 将root设置成T类型指针指向对象的父节点，需要Components/StaticMeshComponent.h头文件的支持 |
 
 # 九、UE4Z中一些常用的类
 
@@ -780,5 +794,8 @@ UFUNCTION()宏也提供了元数据说明符，元数据说明符可以对参数
 | -------------------- | ---------------- |
 | UStaticMeshComponent | 处理材质贴图的类 |
 | FVector              | 三维向量类       |
-|                      |                  |
+| FMath                | 数学运算类       |
+| USceneComponent      | 场景组件         |
+| UStaticComponent     | 静态网格组件     |
+| UCameraComponent     | 相机组件         |
 
