@@ -57,13 +57,33 @@ Lerp组件在Math的多个二级目录中存在，有各种类型的插值变化
 
 - Other Actor：返回进入触发器的游戏物体的信息。
 
+### <font color=green>Game</font>
+
+### <font color=orange>Damage</font>
+
+#### **Event AnyDamage**
+
+Event AnyDamage事件是配合Apply Damage组件一起使用的，当Apply Damage组件执行时，会自动触发Event AnyDamage事件。
+
+![](【UE4】UE4组件/Snipaste_2019-10-28_17-28-37.png)
+
+**输出：**
+
+Damage：从Apply Damage组件的Damage中传递过来的值；
+
+Damage Type：从Apply Damage组件传递过来的Damage Type Class；
+
+Instigated By：从Apply Damage组件传递过来的Event Instigateor；
+
+Damage Causer：从Apply Damage组件传递过来的Damage Causer；
+
+
+
 ## <font color=red>Event BeginPlay</font>
 
 游戏开始时自动触发
 
 ![](【UE4】UE4组件/Snipaste_2019-10-25_10-57-11.png)
-
-## 
 
 ## <font color=red>Add TimeLine(添加时间线)</font>
 
@@ -140,6 +160,30 @@ Camera Fades组件是只有在Get Player Camera Menager组件的外拉中才能�
 - Player Index：输入角色索引；
 - Return Value：返回输入角色身上的相机对象。
 
+### <font color=green>Damage</font>
+
+#### **Apply Damage**
+
+Apply Damage组件一般和Event AnyDamage组件配合使用，当Apply Damage组件触发时，UE4会自动调用Event AnyDamage事件。需要注意的是，只有在Base Daamge不为0时才能触发Event Damage事件。
+
+![](【UE4】UE4组件/Snipaste_2019-10-28_17-26-35.png)
+
+**输入：**
+
+Ddamaged Actor：受到伤害的对象；
+
+Base Damage：输入的伤害值；
+
+Event Instigator：引发伤害的对象，如：持枪的敌人；
+
+Damage Causer：实际造成伤害的对象，如：子弹；
+
+Damage Type Class：伤害的类型；
+
+**输出：**
+
+Return Value：最终造成的实际伤害。
+
 ## <font color=red>Rendering(渲染)</font>
 
 ### <font color=green>Components</font>
@@ -156,6 +200,14 @@ Camera Fades组件是只有在Get Player Camera Menager组件的外拉中才能�
 #### **Get Intensity(获取光源强度)**
 
 使用和Set Intensity一样。
+
+## <font color=red>String(字符串组件)</font>
+
+### <font color=green>Append(字符串连接)</font>
+
+![](【UE4】UE4组件/Snipaste_2019-10-28_17-04-19.png)
+
+
 
 ## <font color=red>Utilities(通用组件)</font>
 
