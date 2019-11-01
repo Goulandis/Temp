@@ -778,6 +778,10 @@ UPROPRETY(meta=(ClampMin=-5.0f,ClampMax=5.0f,UIMin=-5.0f,UIMax=5.0f))
 
 UFUNCTION()宏也提供了元数据说明符，元数据说明符可以对参数做一些限制，这里不再列出，详细的说明参官方文档： https://docs.unrealengine.com/zh-CN/Programming/UnrealArchitecture/Reference/Metadata/index.html 
 
+# 八、字符串操作
+
+## 1.FString
+
 # 八、UE4的碰撞检测
 
 ## 1.添加碰撞体
@@ -798,7 +802,11 @@ UE4提供多种生成碰撞体的方法
 
 ## 4.碰撞检测
 
-# 九、常用函数
+# 九、UE4 Module机制
+
+
+
+# 、常用函数
 
 | 函数名                                                    | 作用                                                         |
 | --------------------------------------------------------- | ------------------------------------------------------------ |
