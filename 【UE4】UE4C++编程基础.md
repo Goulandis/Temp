@@ -522,9 +522,11 @@ TSharedRef<FMyCustom> MyCustom = MakeShared<FMyCustom>();
 
 这种情况下，结构体可以正常访问，但是结构体里的UObject对象会由于UObject的回收机制，在过一段时间后被销毁，从而导致这个对象无法访问和出现野指针的情况，UE4则使用<font color=red>FGCObject</font>类来解决这种情况，我们只需让这种情况下的结构体继承自FGCObject类积即可。
 
-# 六、C++编程
+# 六、C++类
 
-## 1.使用Unreal Editor创建C++类
+## 1.C++类的创建
+
+### 使用Unreal Editor创建C++类
 
 当我们创建一个C++编程模板时，在内容浏览器中会生成一个C++类文件夹，同时目录下还会生成一个项目名称文件夹，我们可以在对应的文件夹下右键创建一个C++类，选择新类需要继承的父类和存储位置后确定，UE4会自动打开VS，并生成一个`.cpp`文件和一个`.h文件`。
 
@@ -542,15 +544,30 @@ TSharedRef<FMyCustom> MyCustom = MakeShared<FMyCustom>();
 
 ![](【UE4】UE4基础/Snipaste_2019-10-16_10-40-52.png)
 
-这里GENERATED_BODY()宏处有两种情况，我们可以使用GENERATED_UCLASS_BODY()宏和GENERATED_BODY()宏，二者的区别是:
+<font color=red> 这里GENERATED_BODY()宏处有两种情况，我们可以使用GENERATED_UCLASS_BODY()宏和GENERATED_BODY()宏，二者的区别是:</font>
 
-使用了GENERATED_BODY()宏，我们的类中就不能直接使用父类中的声明，如果我们要去实现，我就必须在本类中声明。
+<font color=red> 使用了GENERATED_BODY()宏，我们的类中就不能直接使用父类中的声明，如果我们要去实现，我就必须在本类中声明。使用GENERATED_BODY()宏，我们必须手动实现一个无参构造函数。</font>
 
-使用GENERATED_UCLASS_BODY()宏，我们就可以使用父类声明的构造函数，在本类中不需要再声明，而可以直接实现即可。
+<font color=red>使用GENERATED_UCLASS_BODY()宏，我们就可以使用父类声明的构造函数，在本类中不需要再声明，而可以直接实现即可，且实现的构造函数必须带const FObjectInitializer&参数。</font>
 
-### <font color=blue> 小知识</font>
+### 在VS中手动创建类
 
-<font color=blue> UE4中有一个及其操蛋的问题，就是宏GENERATED_BODY()似乎有固定位置（行数）限制，高于或低于这个位置时，VS编译器都会在GENERATED_BODY()处报红，但奇怪的是在UE4引擎中运行时不会出错。可能时UE4对VS的支持还不够彻底。</font>
+VS中的工程目录的Source目录下的目录结构有两种：
+
+- 一堆的.cpp、.h和.build.cs文件。
+- .h文件在public目录下，.cpp文件在private目录下，.biuld.cs文件在Source目录下.。
+
+对于第一种目录结构，直接在Source文件夹下使用VS添加.cpp和.h文件即可。
+
+对于第二种目录结构，我们需要在public下添加.h文件，在private下添加.cpp文件。
+
+在VS中手动创建的类如果继承UObject，我们需要手动添加UCLASS()宏和GENERATED_BODY()或GENERATED_UCLASS_BODY()宏。
+
+<font color=red> 但是要注意的是手动创建的类系统不会自动为类名加前缀，所以手动创建的类定义类名时应该合乎UE4C++类的命名规范。</font>
+
+### <font color=orange> 小知识</font>
+
+<font color=orange> UE4中有一个及其操蛋的问题，就是宏GENERATED_BODY()似乎有固定位置（行数）限制，高于或低于这个位置时，VS编译器都会在GENERATED_BODY()处报红，但奇怪的是在UE4引擎中运行时不会出错。可能时UE4对VS的支持还不够彻底。</font>
 
 ## 2.C++类的删除
 
@@ -558,9 +575,9 @@ UE4引擎自身不提供C++的删除功能，但是有时候我们需要删除�
 
 唯一的办法就是建立在文件操作上了，步骤如下：
 
-- 删除项目目录下Source文件夹下需要删除类的`.cpp`和`.h`文件
-- 清空Binaries/win64文件夹下的所有内容，切记不要整个文件夹都删掉，否则整个项目将无法打开，原因未知
-- 双击.uproject文件，启动项目让引擎重新加载配置
+- 删除项目目录下Source文件夹下需要删除类的`.cpp`和`.h`文件；
+- 清空Binaries/win64文件夹下的所有内容，切记不要整个文件夹都删掉，否则整个项目将无法打开，原因未知；
+- 双击.uproject文件，启动项目让引擎重新加载配置。
 
 ## 3.UE4类的命名规则
 
@@ -573,6 +590,15 @@ UE4为一些常用类的命名添加了一些命名前缀，<font color=red> �
 | A    | 继承自Actor的类                    |
 | S    | Slate控件相关类                    |
 | H    | HitResult相关类                    |
+
+## 4.C++类的实例化
+
+在UE4中实例化C++类稍显复杂，分为如下几种情况：
+
+- 如果是一个纯C++类型的类，即按UE4的命名规则F开头的类，符合C++的实例化条件，可以直接使用new运算符来实例化，或者直接使用构造函数在栈区中实例化；
+- 如果是一个继承自UObject但又不继承只Actor的类，那么我们需要使用<font color=red>`NewObject<T>()`</font>函数来实例化类对象；
+- 如果是一个继承只Actor类的类，那么我们需要使用我们需要使用UWorld对象中的SpawnActor函数来实例化，调用方式为：<font color=red> `GetWorld()->SpawnActor<T>()`</font>；
+- 如果我们需要产出一个Slate类，那么我们需要使用<font color=red> SNew()</font>函数来实例化。
 
 ## 4.类的使用
 
@@ -829,3 +855,8 @@ UE4提供多种生成碰撞体的方法
 | UStaticComponent     | 静态网格组件     |
 | UCameraComponent     | 相机组件         |
 
+# TEXT()不能输出中文，否则编译无法通过
+
+# 自己创建的结构体无法暴漏给蓝图？
+
+# TActorIterator<AMysqlConnector> it(GetWorld());

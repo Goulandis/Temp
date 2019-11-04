@@ -94,15 +94,27 @@ UMySQLDatabase::UMySQLDatabase(const FObjectInitializer& ObjectInitializer)
 
 但是这么配置只能对当前项目有效，新建项目又需要重新配置，一劳永逸的方法目前还没有研究出来😂。
 
-# UE4定义命名空间则无法打开.generated.h文件
-
 # 三、使用MySQLIntegration插件进行数据库连接
 
 - Update Data from Query Async组件后面必须再跟一个其他的节点，节点才能正常执行
 - UE4 C++编程中不能出现私有私有变量？
 - UE4 C++静态变量？
-- MySQLIntegration插件只支持sql语句，不支持存储过程
+- MySQL Integration插件只支持sql语句，不支持存储过程
 - 在蓝图中实现的C++函数在蓝图中没法使用？
 - 暴露给蓝图的变量和函数必须是公有且非静态的
 - UE4 C++类创建对象，大象无形31页
 - UE4 C++编程中if else语句必须加{}
+
+## 1.MySQL Integration安装
+
+MySQL Integration插件可以直接在UE4商城中搜索到，直接下载安装即可，如何是从外部导入的离线包，直接将插件文件夹丢入UE4安装目录下的Engine\Plugins文件夹下即可。
+
+## 2.激活MySQL Integration
+
+激活插件直接在UE4中的Edit/Plugins/Installed下找到MySQL Integration勾选Enabled即可，勾选插件之后UE4会提示需要重启UE4才可激活，重启软件就可以激活插件了。
+
+## 3.MySQL Integration提供的蓝图组件
+
+### SetConnectionPro
+
+# UE4定义命名空间则无法打开.generated.h文件
