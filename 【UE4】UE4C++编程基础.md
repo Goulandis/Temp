@@ -676,6 +676,16 @@ UE_LOG(LogTemp, Error, TEXT("Hello World!"));
 - **Log/Warning/Error**：这是UE_LOG();宏的三个级别，分别是日志级别--在控制台中输出白色字体；警告级别--在控制台中输出黄色字体，并有Warning提示；错误级别--在控制台中输出红色字体，并有Error提示。
 - **TEXT()**：TEXT()也是一个宏用于将我们自定义的额字符串输出到控制台。
 
+**输出变量**
+
+UE_LOG()宏可以输出FString字符串，且字符串类型中只能输出FString。
+
+```
+UE_LOG(LogTemp, Error, TEXT("%s"),*str);
+```
+
+<font color=red> 使用*str是因为FString是UE4的封装类，定义的FString对象都是指针。</font>
+
 ## 2.UCLASS()/UPROPERTY()/UFUNCTION()
 
 **作用**
@@ -784,7 +794,7 @@ UPROPRETY(meta=(ClampMin=-5.0f,ClampMax=5.0f,UIMin=-5.0f,UIMax=5.0f))
 | **BlueprintCosmetic**                           | 此函数为修饰函数而且无法运行在专属服务器上                   |
 | **BlueprintGetter**                             | 修饰自定义的Getter函数专用，该函数将用作Blueprint暴露属性的访问器。这个说明符意味着BlueprintPure和BlueprintCallable。参考：https://blog.csdn.net/u012793104/article/details/78480085 |
 | **BlueprintSetter**                             | 修饰自定义的Setter函数专用，此函数将用作Blueprint暴露属性的增变器。这个说明符意味着BlueprintCallable。参考：https://blog.csdn.net/u012793104/article/details/78480085 |
-| **BlueprintImplementableEvent**                 | 此函数可以在蓝图或关卡蓝图图表内进行重载*不能修饰private级别的函数，函数在C++代码中不需要实现定义* |
+| **BlueprintImplementableEvent**                 | <font color=red>此函数可以在蓝图或关卡蓝图图表内进行重载*不能修饰private级别的函数，函数在C++代码中不需要实现定义*</font> |
 | **BlueprintInternalUseOnly**                    | 表示该函数不应该暴露给最终用户                               |
 | **BlueprintNativeEvent**                        | 此函数将由蓝图进行重载，但同时也包含native类的执行。提供一个名称为[FunctionName]_Implementation的函数本体而非[FunctionName];自动生成的代码将包含转换程序,此程序在需要时会调用实施方式 |
 | **BlueprintPure**                               | 该函数不会以任何方式影响拥有对象，并且可以在蓝图或级别蓝图图表中执行 |
@@ -803,6 +813,26 @@ UPROPRETY(meta=(ClampMin=-5.0f,ClampMax=5.0f,UIMin=-5.0f,UIMax=5.0f))
 | **WithValidation**                              | 声明一个名为与main函数相同的附加函数，但将_Validation添加到最后。该函数采用相同的参数，并返回一个布尔值来指示是否应该继续调用主函数 |
 
 UFUNCTION()宏也提供了元数据说明符，元数据说明符可以对参数做一些限制，这里不再列出，详细的说明参官方文档： https://docs.unrealengine.com/zh-CN/Programming/UnrealArchitecture/Reference/Metadata/index.html 
+
+## 3.GENERATED_BODY()
+
+GENERATED_BODY()宏标识的类表示，此类不可以使用父类的声明，最常见的就是GENERATED_BODY标识的类必须要自己声明和实现无参构造函数，否则编译将无法通过。
+
+## 4.GENERATED_UCLASS_BODY()
+
+GENERATED_UCLASS_BODY()宏标识的类表示此类继承父类的声明，最常见的就是GENERATED_UCLASS_BODY()标识的类不需要声明构造函数，如果需要重写构造函数，则必须为构造函数传递FObjectInitializer类的常量引用，这也是为什么我们经常在UE4编程中看见如下代码的缘故
+
+```C++
+UMySQLDatabase::UMySQLDatabase(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+        //重写块
+}
+```
+
+其中Super()y用于给父类传递参数
+
+<font color=red> GENERATED_BODY()和GENERATED_UCLASS_BODY()宏都会为其标识的类生成一些成员函数，只是二者在使用权限上有一些区别，具体生成了什么成员函数及其区别由于目前自己搜索到的资料过少，暂时无法弄明白，需要以后慢慢研究</font>。
 
 # 八、字符串操作
 
@@ -860,3 +890,5 @@ UE4提供多种生成碰撞体的方法
 # 自己创建的结构体无法暴漏给蓝图？
 
 # TActorIterator<AMysqlConnector> it(GetWorld());
+
+# UE4定义命名空间则无法打开.generated.h文件
