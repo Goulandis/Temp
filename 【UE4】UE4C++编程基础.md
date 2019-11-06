@@ -838,7 +838,127 @@ UMySQLDatabase::UMySQLDatabase(const FObjectInitializer& ObjectInitializer)
 
 ## 1.FString
 
-# 八、UE4的碰撞检测
+FString是UE4C++编程中极其常用的一个UE4字符串封装类型，所以这里单独打出来讲一讲。
+
+### FString初始化
+
+- 方法1：
+
+```C++
+FString fStr = FString(TEXT("str")); 
+```
+
+- 方法2：
+
+```C++
+FString fStr = FString("str"); 
+```
+
+- 方法3：
+
+```C++
+FString fStr = "str"; 
+```
+
+### FString转换
+
+- FString->FName：
+
+```c++
+FName fn = FName(*fStr);
+```
+
+- FString->FText：
+
+```
+FText ft = FText::FromString(fStr)
+```
+
+- FString->bool
+
+```
+bool b = fstr.ToBool();
+```
+
+- FString->int
+
+```
+int i = FCString::Atoi(*fstr);
+```
+
+- FString->float
+
+```
+float f = FCString::Atof(*fstr)
+```
+
+
+
+- FString->std::string
+
+- std::string->FString
+
+```
+
+```
+
+- FName->FStirng：
+
+```C++
+FString fstr = fn.ToString();//fn为FName类型
+```
+
+- FText->FString
+
+```C++
+FString fstr = ft.ToString();//ft为FText类型
+```
+
+- float->FString
+
+```C++
+FString fstr = FString::SanitizeFloat(FloatValue);
+```
+
+- int->FString
+
+```
+FString fstr = FString::FromInt(IntValue);
+```
+
+- bool->FString
+
+```
+FString fstr = InBool?TEXT("true"):TEXT("false");
+```
+
+- FVector->FString
+
+```
+FString fstr = VectorVariable.ToString();
+```
+
+- FVector2D->FString
+
+```
+FString fstr = Vector2DVariale.ToString();
+```
+
+- FRotator->FString
+
+```
+FString fstr = RotatorVariable.ToString();
+```
+
+- UObject->FString
+
+```
+FString fstr = (InObj != NULL)?InObj->GetName():FString(TEXT("None"));
+```
+
+
+
+# **八、UE4的碰撞**检测
 
 ## 1.添加碰撞体
 
@@ -892,3 +1012,5 @@ UE4提供多种生成碰撞体的方法
 # TActorIterator<AMysqlConnector> it(GetWorld());
 
 # UE4定义命名空间则无法打开.generated.h文件
+
+# UE4共享指针
