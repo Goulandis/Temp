@@ -787,30 +787,30 @@ UPROPRETY(meta=(ClampMin=-5.0f,ClampMax=5.0f,UIMin=-5.0f,UIMax=5.0f))
 
 ### UFUNCTION()宏的参数
 
-| 参数                                            | 作用                                                         |
-| ----------------------------------------------- | ------------------------------------------------------------ |
-| **BlueprintAuthorityOnly**                      | 如果在具有网络权限的计算机（服务器，专用服务器或单人游戏）上运行，此功能只能从Blueprint代码执行,如无网络权限，则该函数将不会从蓝图代码中执行 |
-| **BlueprintCallable**                           | 该函数可以在蓝图或关卡蓝图图表中执行                         |
-| **BlueprintCosmetic**                           | 此函数为修饰函数而且无法运行在专属服务器上                   |
-| **BlueprintGetter**                             | 修饰自定义的Getter函数专用，该函数将用作Blueprint暴露属性的访问器。这个说明符意味着BlueprintPure和BlueprintCallable。参考：https://blog.csdn.net/u012793104/article/details/78480085 |
-| **BlueprintSetter**                             | 修饰自定义的Setter函数专用，此函数将用作Blueprint暴露属性的增变器。这个说明符意味着BlueprintCallable。参考：https://blog.csdn.net/u012793104/article/details/78480085 |
-| **BlueprintImplementableEvent**                 | <font color=red>此函数可以在蓝图或关卡蓝图图表内进行重载*不能修饰private级别的函数，函数在C++代码中不需要实现定义*</font> |
-| **BlueprintInternalUseOnly**                    | 表示该函数不应该暴露给最终用户                               |
-| **BlueprintNativeEvent**                        | 此函数将由蓝图进行重载，但同时也包含native类的执行。提供一个名称为[FunctionName]_Implementation的函数本体而非[FunctionName];自动生成的代码将包含转换程序,此程序在需要时会调用实施方式 |
-| **BlueprintPure**                               | 该函数不会以任何方式影响拥有对象，并且可以在蓝图或级别蓝图图表中执行 |
-| **CallInEditor**                                | 该函数可以在编辑器中通过详细信息面板中的按钮在选定实例中调用 |
-| **Category** = "TopCategory`|`SubCategory\|..." | 指定函数在编辑器中的显示分类层级，`|`是分层级的符号          |
-| **Client**                                      | 此函数仅在该函数从属对象所从属的客户端上执行。提供一个名称为[FunctionName]_Implementation的函数主体，而不是[FunctionName]; 自动生成的代码将包含一个转换程序来在需要时调用实现方法 |
-| **CustomThunk**                                 | UnrealHeaderTool（虚幻头文件工具）的代码生成器将不会为此函数生成execFoo转换程序; 可由用户来提供 |
-| **Exec**                                        | 此函数可从游戏中的控制台中执行。Exec命令仅在特定类中声明时才产生作用,此标记修饰的函数应在可以接受输入的类中，才能正常接受命令 |
-| **NetMilticast**                                | 无论角色的NetOwner如何，该函数都在服务器上本地执行并复制到所有客户端 |
-| **Reliable**                                    | Reliable函数在网络间进行复制，并会忽略带宽或网络错误而被确保送达。仅在与客户端或服务器共同使用时可用 |
-| **UnReliable**                                  | UnReliable函数在网络间复制，但可能会由于带宽限制或网络错误而传送失败。仅在与客户端或服务器一起使用时有效 |
-| **SealeEvent**                                  | 这个函数不能在子类中重写。 SealedEvent关键字只能用于事件。对于非事件函数，声明它们是static的还是final的来封闭它们 |
-| **ServiceRequest**                              | ServiceRequest函数是一个RPC服务请求                          |
-| **ServiceResponse**                             | ServiceResponse函数是一个RPC服务响应                         |
-| **Server**                                      | 此函数仅在服务器上执行。提供一个名称为[FunctionName]_Implementation的函数主体，而不是[FunctionName]; 自动生成的代码将包含一个转换程序来在需要时调用实现方法 |
-| **WithValidation**                              | 声明一个名为与main函数相同的附加函数，但将_Validation添加到最后。该函数采用相同的参数，并返回一个布尔值来指示是否应该继续调用主函数 |
+| 参数                                                   | 作用                                                         |
+| ------------------------------------------------------ | ------------------------------------------------------------ |
+| **BlueprintAuthorityOnly**                             | 如果在具有网络权限的计算机（服务器，专用服务器或单人游戏）上运行，此功能只能从Blueprint代码执行,如无网络权限，则该函数将不会从蓝图代码中执行 |
+| **BlueprintCallable**                                  | 该函数可以在蓝图或关卡蓝图图表中执行                         |
+| **BlueprintCosmetic**                                  | 此函数为修饰函数而且无法运行在专属服务器上                   |
+| **BlueprintGetter**                                    | 修饰自定义的Getter函数专用，该函数将用作Blueprint暴露属性的访问器。这个说明符意味着BlueprintPure和BlueprintCallable。参考：https://blog.csdn.net/u012793104/article/details/78480085 |
+| **BlueprintSetter**                                    | 修饰自定义的Setter函数专用，此函数将用作Blueprint暴露属性的增变器。这个说明符意味着BlueprintCallable。参考：https://blog.csdn.net/u012793104/article/details/78480085 |
+| **<font color=red>BlueprintImplementableEvent</font>** | 此函数可以在蓝图或关卡蓝图图表内进行重载*不能修饰private级别的函数，函数在C++代码中不需要实现定义* |
+| **BlueprintInternalUseOnly**                           | 表示该函数不应该暴露给最终用户                               |
+| **BlueprintNativeEvent**                               | 此函数将由蓝图进行重载，但同时也包含native类的执行。提供一个名称为[FunctionName]_Implementation的函数本体而非[FunctionName];自动生成的代码将包含转换程序,此程序在需要时会调用实施方式 |
+| **BlueprintPure**                                      | 该函数不会以任何方式影响拥有对象，并且可以在蓝图或级别蓝图图表中执行 |
+| **CallInEditor**                                       | 该函数可以在编辑器中通过详细信息面板中的按钮在选定实例中调用 |
+| **Category** = "TopCategory`|`SubCategory\|..."        | 指定函数在编辑器中的显示分类层级，`|`是分层级的符号          |
+| **Client**                                             | 此函数仅在该函数从属对象所从属的客户端上执行。提供一个名称为[FunctionName]_Implementation的函数主体，而不是[FunctionName]; 自动生成的代码将包含一个转换程序来在需要时调用实现方法 |
+| **CustomThunk**                                        | UnrealHeaderTool（虚幻头文件工具）的代码生成器将不会为此函数生成execFoo转换程序; 可由用户来提供 |
+| **Exec**                                               | 此函数可从游戏中的控制台中执行。Exec命令仅在特定类中声明时才产生作用,此标记修饰的函数应在可以接受输入的类中，才能正常接受命令 |
+| **NetMilticast**                                       | 无论角色的NetOwner如何，该函数都在服务器上本地执行并复制到所有客户端 |
+| **Reliable**                                           | Reliable函数在网络间进行复制，并会忽略带宽或网络错误而被确保送达。仅在与客户端或服务器共同使用时可用 |
+| **UnReliable**                                         | UnReliable函数在网络间复制，但可能会由于带宽限制或网络错误而传送失败。仅在与客户端或服务器一起使用时有效 |
+| **SealeEvent**                                         | 这个函数不能在子类中重写。 SealedEvent关键字只能用于事件。对于非事件函数，声明它们是static的还是final的来封闭它们 |
+| **ServiceRequest**                                     | ServiceRequest函数是一个RPC服务请求                          |
+| **ServiceResponse**                                    | ServiceResponse函数是一个RPC服务响应                         |
+| **Server**                                             | 此函数仅在服务器上执行。提供一个名称为[FunctionName]_Implementation的函数主体，而不是[FunctionName]; 自动生成的代码将包含一个转换程序来在需要时调用实现方法 |
+| **WithValidation**                                     | 声明一个名为与main函数相同的附加函数，但将_Validation添加到最后。该函数采用相同的参数，并返回一个布尔值来指示是否应该继续调用主函数 |
 
 UFUNCTION()宏也提供了元数据说明符，元数据说明符可以对参数做一些限制，这里不再列出，详细的说明参官方文档： https://docs.unrealengine.com/zh-CN/Programming/UnrealArchitecture/Reference/Metadata/index.html 
 
@@ -838,7 +838,7 @@ UMySQLDatabase::UMySQLDatabase(const FObjectInitializer& ObjectInitializer)
 
 ## 1.FString
 
-FString是UE4C++编程中极其常用的一个UE4字符串封装类型，所以这里单独打出来讲一讲。
+FString是UE4C++编程中极其常用的一个UE4字符串封装类型，是UE4自带字符串类型中唯一可以进行各种字符串操作的字符串类型，同时FString的资源消耗也是最大的。
 
 ### FString初始化
 
@@ -956,9 +956,23 @@ FString fstr = RotatorVariable.ToString();
 FString fstr = (InObj != NULL)?InObj->GetName():FString(TEXT("None"));
 ```
 
+## 2.FName
 
+FName也是UE4自带的字符串类型，FName是不区分大小写的且FName在UE4中，赋予FName的字符串会被存放到UE4的数据表中，多个FName赋予相同的字符串时都会指向同一个数据表地址。FName被赋值之后不可改变也不能被操作，FName的不可改变的性质和C++的string类很相似，因为FName的这些性质是的FName的查找和访问非常快。
 
-# **八、UE4的碰撞**检测
+- FName的初始化
+
+```C++
+FName fn1 = FName(TEXT("str"));
+FName fn2 = FName("str");
+FName fn3 = "str";
+```
+
+## 3.FText
+
+FText是一个FString的升级版字符串，存储容量比FString要大很多，主要用于UE4的文本存储与处理。
+
+# 八、UE4的碰撞**检测
 
 ## 1.添加碰撞体
 

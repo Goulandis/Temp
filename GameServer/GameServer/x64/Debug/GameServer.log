@@ -1,0 +1,4 @@
+﻿  MySqlConnector.cpp
+g:\goulandis\ue4project\mygame\server\gameserver\gameserver\mysqlconnector.cpp(42): warning C4551: 缺少参数列表的函数调用
+g:\goulandis\ue4project\mygame\server\gameserver\gameserver\mysqlconnector.cpp(45): warning C4267: “参数”: 从“size_t”转换到“unsigned long”，可能丢失数据
+  GameServer.vcxproj -> G:\Goulandis\UE4Project\MyGame\Server\GameServer\x64\Debug\GameServer.exe
