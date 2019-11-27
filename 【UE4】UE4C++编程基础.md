@@ -14,11 +14,11 @@ tags:
 
 ![](【UE4】UE4基础/Snipaste_2019-10-15_10-16-42.png)
 
-### DirectXRedist
+**DirectXRedist**
 
  DirectXRedist是DirectX文件所在的地方。这个文件夹也包括了安装DirectX的安装包。
 
-### Launcher
+**Launcher**
 
 Launcher是引擎启动器所在文件夹。Launcher包含了如下子文件夹：
 
@@ -27,7 +27,7 @@ Launcher是引擎启动器所在文件夹。Launcher包含了如下子文件夹�
 - PatchStaging：这里保存了下载UE4版本的临时数据。
 - VaultCache：这个文件夹包含了所有你从商城购买的资源的缓存。
 
-### 4.10
+**4.10**
 
 4.10文件夹有如下子文件夹：
 
@@ -41,19 +41,19 @@ Launcher是引擎启动器所在文件夹。Launcher包含了如下子文件夹�
 
 ![](【UE4】UE4基础/Snipaste_2019-10-16_17-06-01.png)
 
-### .vs
+**.vs**
 
 VS的智能解读和智能提示的缓存
 
-### Binaries
+**Binaries**
 
 编辑器热加载类的二进制文件
 
-### Config
+**Config**
 
 Config是配置文件，保存一些偏好设置等配置
 
-### Content
+**Content**
 
 Content文件与引擎里的Content文件对应
 
@@ -69,23 +69,23 @@ Content文件的目录结构
 
 **StartContent**文件就是我们创建工程时导入新手包
 
-### Intermediate
+**Intermediate**
 
 Intermediate文件夹存放我们在引擎中构建的一些中间文件，如：光照的构建文件等等。
 
-### Saved
+**Saved**
 
 Saved中保存项目的备份文件和开发日志
 
-### Source
+**Source**
 
 Source对应引擎中C++Class文件夹
 
-### ARP.sln
+**ARP.sln**
 
 VS解决方案的文件
 
-### ARP
+**ARP**
 
 项目的启动文件
 
@@ -360,9 +360,11 @@ Marketplace
 | Esc                    | 退出预览模式                     |
 | F11                    | 进入仿真模式                     |
 
-# 四、UE4中的类
+# 四、类
 
-## 1.UObject类
+## 1.UE4中的预定义类
+
+### UObject类
 
 Uobject类提供以下功能：
 
@@ -412,7 +414,7 @@ C++的内存管理是由程序员完成的。因此对象管理一直是一个�
 
 - 构造函数被调用的时候， WOrld不一定存在。 Get World0返回值有可能为空！
 
-## 2.Actor类
+### Actor类
 
 Actor类具有组件挂载能力，即所有需要挂载组件的对象都需要继承Actor类，但是有一点是需要纠正的，Actor类不是必须的，说“Actor类是一切实体的基类”这种说法严格意义上来说是不正确的，比如：做一个管理类对象就不需要挂在其他的组件。
 
@@ -449,23 +451,166 @@ BeginPlay()是一个在游戏开始时和对象生成时就会调用的一次的
 
 Tick(float DeltaTime)函数则是每帧调用，DeltaTime是上一帧到这一帧所经历的时长，有UE4系统传入。
 
-## 3.Pawn类
+### Pawn类
 
  Pawn类是一个代表你或者代表电脑的人工智能的游戏对象，它是可以在屏幕上控制的游戏对象。Pawn类是从Actor类中基础的，它可以通过玩家的设备（键盘、鼠标等）控制或者被人工智能脚本控制。如果它是被玩家控制的，我们通常称之为controller（控制器）；如果它是被人工智能脚本控制的，我们通常称之为AI（Artificial Intelligence，人工智能），如果你经常玩游戏，那些NPC（Non-player Characters，非玩家角色）就通常具有AI行为。 
 
-## 4.Character类
+### Character类
 
 Character类代表一个角色，它继承自Pawn类。那么，什么时候该继承自 Character类，什么时候该继承自Pawn类呢？这个问题的答案，我们必须从 Character类的定义中寻找—它提供了什么样的功能？Character类提供了一个特殊的组件， Character Movement。这个组件提供了一个基础的、基于胶囊体的角色移动功能。包括移动和跳跃，以及如果你需要，还能扩展出更多，例如蹲伏和爬行。如果你的Pawn类十分简单，或者不需要这样的移动逻辑（比如外星人飞船），那么你可以不继承自这个类。当然，现在很多游戏中的角色（无论是人类，还是某些两足行走的怪物），都能够适用Character类的逻辑。
 
-## 5.Controller类
+### Controller类
 
 Controller是漂浮在 Pawn/Character之上的灵魂。它操纵着Pawn和 Character的行为。 Controller可以是AI， AI Controller类，你可以在这个类中使用虚幻引擎优秀的行为树/EQS环境查询系统。同样也可以是玩家， Player Controller类。你可以在这个类中绑定输入，然后转化为对Pawn的指令。为何虚幻引擎采用这样的设计。Epic给出的理由非常简单:“不同的怪物也许会共享同样的 Controller，从而获得类似的行为”。其实， Controller抽象掉了“怪物行为”，也就是扮演了有神论者眼中“灵魂”的角色。既然是灵魂，那么肉体就不唯一，因此灵魂可以通过 Possess/Un Possess来控制一个肉体，或者从一个肉体上离开。
 
-## 6.各个类之间的层级关系
+### 各个类之间的层级关系
 
 ![](【UE4】UE4基础/Snipaste_2019-10-16_21-27-20.png)
 
-# 五、UE4的反射和垃圾回收
+## 2.C++类的创建
+
+### 使用Unreal Editor创建C++类
+
+当我们创建一个C++编程模板时，在内容浏览器中会生成一个C++类文件夹，同时目录下还会生成一个项目名称文件夹，我们可以在对应的文件夹下右键创建一个C++类，选择新类需要继承的父类和存储位置后确定，UE4会自动打开VS，并生成一个`.cpp`文件和一个`.h文件`。
+
+![](【UE4】UE4基础/Snipaste_2019-10-16_10-05-42.png)
+
+![](【UE4】UE4基础/Snipaste_2019-10-16_10-06-10.png)
+
+![](【UE4】UE4基础/Snipaste_2019-10-16_10-06-16.png)
+
+上图有一个要注意的地方，我们在创建类是可以选择后面的公有与私有，或者都不选，选择公有或私有都会在创建一个C++Class/ProjectName文件夹下创建一个Public文件夹存放我们创建的类，而在VS中则会创建一个public文件夹存放.h文件，创建一个private文件夹存放.cpp文件，如果都不选，则.cpp和.h文件都存放在Source文件夹下。
+
+![](【UE4】UE4基础/Snipaste_2019-10-16_10-07-00.png)
+
+创建的C++类的`.h`文件的结构
+
+![](【UE4】UE4基础/Snipaste_2019-10-16_10-40-52.png)
+
+<font color=red> 这里GENERATED_BODY()宏处有两种情况，我们可以使用GENERATED_UCLASS_BODY()宏和GENERATED_BODY()宏，二者的区别是:</font>
+
+<font color=red> 使用了GENERATED_BODY()宏，我们的类中就不能直接使用父类中的声明，如果我们要去实现，我就必须在本类中声明。使用GENERATED_BODY()宏，我们必须手动实现一个无参构造函数。</font>
+
+<font color=red>使用GENERATED_UCLASS_BODY()宏，我们就可以使用父类声明的构造函数，在本类中不需要再声明，而可以直接实现即可，且实现的构造函数必须带const FObjectInitializer&参数。</font>
+
+### 在VS中手动创建类
+
+VS中的工程目录的Source目录下的目录结构有两种：
+
+- 一堆的.cpp、.h和.build.cs文件。
+- .h文件在public目录下，.cpp文件在private目录下，.biuld.cs文件在Source目录下.。
+
+对于第一种目录结构，直接在Source文件夹下使用VS添加.cpp和.h文件即可。
+
+对于第二种目录结构，我们需要在public下添加.h文件，在private下添加.cpp文件。
+
+在VS中手动创建的类如果继承UObject，我们需要手动添加UCLASS()宏和GENERATED_BODY()或GENERATED_UCLASS_BODY()宏。
+
+<font color=red> 但是要注意的是手动创建的类系统不会自动为类名加前缀，所以手动创建的类定义类名时应该合乎UE4C++类的命名规范。</font>
+
+### <font color=orange> 小知识</font>
+
+- <font color=orange>UE4中有一个超级奇葩的问题，就是宏GENERATED_BODY()似乎有固定位置（行数）限制，高于或低于这个位置时，VS编译器都会在GENERATED_BODY()处报红，但奇怪的是在UE4引擎中继承自UObject的类运行时不会出错，而继承自Actor的类在GENERATED_BODY()报红时BeginPlay和Tick函数会报错。如下面的图中显示的一样，之所以说他奇葩是因为有的是时候GENERATED_BODY()无论在哪一行却又不会出现这种问题。</font>
+
+  ![](【UE4】C++编程基础/Snipaste_2019-11-27_16-31-07.png)
+
+- <font color=orange> UE4中类的成员变量如果直接在类中初始化，类的实例化对象中该成员依然使没有初始化，只有在构造函数中对类的成员变量作的初始化在类的实例中才会被初始化。不知道UE4为什么会有这种现象，在C++中是没有这种现象的。</font>
+
+- <font color=orange> 在我们创建类时时长会碰到.generated.h文件莫名奇妙的就无法打开了，这是我们只需要切换以下VS的编辑模式到DebugGame Editor就可以了。</font>
+
+  ![](【UE4】C++编程基础/Snipaste_2019-11-27_19-30-13.png)
+
+## 2.C++类的删除
+
+UE4引擎自身不提供C++的删除功能，但是有时候我们需要删除一些类的时候怎么办呢？
+
+唯一的办法就是建立在文件操作上了，步骤如下：
+
+- 删除项目目录下Source文件夹下需要删除类的`.cpp`和`.h`文件；
+- 清空Binaries/win64文件夹下的所有内容，切记不要整个文件夹都删掉，否则整个项目将无法打开，原因未知；
+- 双击.uproject文件，启动项目让引擎重新加载配置。
+
+## 3.UE4类的命名规则
+
+UE4为一些常用类的命名添加了一些命名前缀，<font color=red> 如果我们不写这些前缀，UE4会编译错误</font>。
+
+| 前缀 | 说明                               |
+| ---- | ---------------------------------- |
+| F    | 纯c++类                            |
+| U    | 继承自UObject，但不继承自Actor的类 |
+| A    | 继承自Actor的类                    |
+| S    | Slate控件相关类                    |
+| H    | HitResult相关类                    |
+
+## 4.C++类的实例化
+
+在UE4中实例化C++类稍显复杂，分为如下几种情况：
+
+- 如果是一个纯C++类型的类，即按UE4的命名规则F开头的类，符合C++的实例化条件，可以直接使用new运算符来实例化，或者直接使用构造函数在栈区中实例化；
+
+- 如果是一个继承自UObject但又不继承只Actor的类，那么我们需要使用<font color=red>`NewObject<T>()`</font>函数来实例化类对象；
+
+- 如果是一个继承只Actor类的类，那么我们需要使用我们需要使用UWorld对象中的SpawnActor函数来实例化，调用方式为：<font color=red> `GetWorld()->SpawnActor<T>()`， `GetWorld()->SpawnActor<T>()`不可以在构造函数中使用，如果直接在构造函数中使用UE4在编译时会直接崩溃</font>；
+
+  ![](【UE4】C++编程基础/Snipaste_2019-11-27_18-16-57.png)
+
+- 如果我们需要产出一个Slate类，那么我们需要使用<font color=red> SNew()</font>函数来实例化。
+
+<font color=red> 这里需要注意的是，当在一个类中实例化另一个类的对象时最好不要构造函数中实例化，尽管NewObject可以在构造函数中使用，并且也可以实例化出对象来，但是如果被实例化的类中包含FString类型的成员变量时，这个对象对FString类型的成员的访问会出现错误，其他的基础数据类型却可以正常访问，具体原因不详。</font>
+
+![](【UE4】C++编程基础/Snipaste_2019-11-27_19-15-20.png)
+
+## 4.类的使用
+
+### 继承自UObject类的类
+
+UE4中一个类就是一个实体，但是不是所有的类都可以作为实体编译运行的，只有继承自Actor的类才可以作为一个实体存在，而直接继承自UObject的类则无法直接编译运行，那么我们应该如何让这种情况的类在引擎里编译运行呢？
+
+此时UE4的蓝图类便显现出效果了，什么是蓝图类？<font color=red>蓝图类就类似于Unity中阉割版的预设</font>，任何一个类都可以被创建对应的蓝图类。但是要创建蓝图类还需要做几步操作，我们要想要某个类能被创建蓝图类，那么我们就需要使用UCLASS(Blueprint)在类前说明，编译之后便可以在对应的类对象上右键创建蓝图类，否则创建蓝图类的按钮是非激活状态。
+
+如：
+
+```C++
+UCLASS()
+class ARP_04_API UTest : public UObject
+{
+	GENERATED_BODY()
+	
+};
+```
+
+Test类没有声明`UCLASS(Blueprint)`，所以类Test无法创建蓝图类
+
+![](【UE4】UE4基础/Snipaste_2019-10-17_13-30-29.png)
+
+```C++
+UCLASS(Blueprintable)
+class ARP_04_API UUObj : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	UUObj();
+	UPROPERTY(BlueprintReadWrite)
+	int UObjInt;
+	UFUNCTION(BlueprintCallable)
+	void UObjPrint();
+};
+```
+
+UObj类声明了`UCLASS(Blueprint)`，所以UObj类创建蓝图类的按钮是激活的
+
+![](【UE4】UE4基础/Snipaste_2019-10-17_13-30-49.png)
+
+除此之外，我们若想要让类里面的变量和函数也能被蓝图类使用，我同时还需要在变量前指定`UPROPERTY(BlueprintReadWrite)`，在函数前指定`UFUNCTION(BlueprintCallable)`，就如上面的实例代码一样。
+
+UPROPERTY(BlueprintReadWrite)里的参数不是唯一的，<font color=red> BlueprintReadWrite表示成员变量在蓝图类里可读写，BlueprintReadOnly表示成员变量在蓝图类里只读，BlueprintWriteOnly表示成员变量在蓝图类里只写</font>。
+
+经过以上步骤我们的继承自UObject类的类便可以通过对应的蓝图类在关卡蓝图中使用了，使用BeginPlay节点开始程序，使用Construct节点来实例化我们的蓝图类，通过实例化出来的对象便可调用类中的资源了。如：
+
+![](【UE4】UE4基础/Snipaste_2019-10-17_13-46-52.png)
+
+# 五、反射和垃圾回收
 
 UE4使用C++语言进行开发，但是C++并不支持反射和垃圾回收机制，所以UE4便自己实现了反射和垃圾回收。
 
@@ -522,137 +667,9 @@ TSharedRef<FMyCustom> MyCustom = MakeShared<FMyCustom>();
 
 这种情况下，结构体可以正常访问，但是结构体里的UObject对象会由于UObject的回收机制，在过一段时间后被销毁，从而导致这个对象无法访问和出现野指针的情况，UE4则使用<font color=red>FGCObject</font>类来解决这种情况，我们只需让这种情况下的结构体继承自FGCObject类积即可。
 
-# 六、C++类
-
-## 1.C++类的创建
-
-### 使用Unreal Editor创建C++类
-
-当我们创建一个C++编程模板时，在内容浏览器中会生成一个C++类文件夹，同时目录下还会生成一个项目名称文件夹，我们可以在对应的文件夹下右键创建一个C++类，选择新类需要继承的父类和存储位置后确定，UE4会自动打开VS，并生成一个`.cpp`文件和一个`.h文件`。
-
-![](【UE4】UE4基础/Snipaste_2019-10-16_10-05-42.png)
-
-![](【UE4】UE4基础/Snipaste_2019-10-16_10-06-10.png)
-
-![](【UE4】UE4基础/Snipaste_2019-10-16_10-06-16.png)
-
-上图有一个要注意的地方，我们在创建类是可以选择后面的公有与私有，或者都不选，选择公有或私有都会在创建一个C++Class/ProjectName文件夹下创建一个Public文件夹存放我们创建的类，而在VS中则会创建一个public文件夹存放.h文件，创建一个private文件夹存放.cpp文件，如果都不选，则.cpp和.h文件都存放在Source文件夹下。
-
-![](【UE4】UE4基础/Snipaste_2019-10-16_10-07-00.png)
-
-创建的C++类的`.h`文件的结构
-
-![](【UE4】UE4基础/Snipaste_2019-10-16_10-40-52.png)
-
-<font color=red> 这里GENERATED_BODY()宏处有两种情况，我们可以使用GENERATED_UCLASS_BODY()宏和GENERATED_BODY()宏，二者的区别是:</font>
-
-<font color=red> 使用了GENERATED_BODY()宏，我们的类中就不能直接使用父类中的声明，如果我们要去实现，我就必须在本类中声明。使用GENERATED_BODY()宏，我们必须手动实现一个无参构造函数。</font>
-
-<font color=red>使用GENERATED_UCLASS_BODY()宏，我们就可以使用父类声明的构造函数，在本类中不需要再声明，而可以直接实现即可，且实现的构造函数必须带const FObjectInitializer&参数。</font>
-
-### 在VS中手动创建类
-
-VS中的工程目录的Source目录下的目录结构有两种：
-
-- 一堆的.cpp、.h和.build.cs文件。
-- .h文件在public目录下，.cpp文件在private目录下，.biuld.cs文件在Source目录下.。
-
-对于第一种目录结构，直接在Source文件夹下使用VS添加.cpp和.h文件即可。
-
-对于第二种目录结构，我们需要在public下添加.h文件，在private下添加.cpp文件。
-
-在VS中手动创建的类如果继承UObject，我们需要手动添加UCLASS()宏和GENERATED_BODY()或GENERATED_UCLASS_BODY()宏。
-
-<font color=red> 但是要注意的是手动创建的类系统不会自动为类名加前缀，所以手动创建的类定义类名时应该合乎UE4C++类的命名规范。</font>
-
-### <font color=orange> 小知识</font>
-
-<font color=orange> UE4中有一个及其操蛋的问题，就是宏GENERATED_BODY()似乎有固定位置（行数）限制，高于或低于这个位置时，VS编译器都会在GENERATED_BODY()处报红，但奇怪的是在UE4引擎中运行时不会出错。可能时UE4对VS的支持还不够彻底。</font>
-
-## 2.C++类的删除
-
-UE4引擎自身不提供C++的删除功能，但是有时候我们需要删除一些类的时候怎么办呢？
-
-唯一的办法就是建立在文件操作上了，步骤如下：
-
-- 删除项目目录下Source文件夹下需要删除类的`.cpp`和`.h`文件；
-- 清空Binaries/win64文件夹下的所有内容，切记不要整个文件夹都删掉，否则整个项目将无法打开，原因未知；
-- 双击.uproject文件，启动项目让引擎重新加载配置。
-
-## 3.UE4类的命名规则
-
-UE4为一些常用类的命名添加了一些命名前缀，<font color=red> 如果我们不写这些前缀，UE4会编译错误</font>。
-
-| 前缀 | 说明                               |
-| ---- | ---------------------------------- |
-| F    | 纯c++类                            |
-| U    | 继承自UObject，但不继承自Actor的类 |
-| A    | 继承自Actor的类                    |
-| S    | Slate控件相关类                    |
-| H    | HitResult相关类                    |
-
-## 4.C++类的实例化
-
-在UE4中实例化C++类稍显复杂，分为如下几种情况：
-
-- 如果是一个纯C++类型的类，即按UE4的命名规则F开头的类，符合C++的实例化条件，可以直接使用new运算符来实例化，或者直接使用构造函数在栈区中实例化；
-- 如果是一个继承自UObject但又不继承只Actor的类，那么我们需要使用<font color=red>`NewObject<T>()`</font>函数来实例化类对象；
-- 如果是一个继承只Actor类的类，那么我们需要使用我们需要使用UWorld对象中的SpawnActor函数来实例化，调用方式为：<font color=red> `GetWorld()->SpawnActor<T>()`</font>；
-- 如果我们需要产出一个Slate类，那么我们需要使用<font color=red> SNew()</font>函数来实例化。
-
-## 4.类的使用
-
-### 继承自UObject类的类
-
-UE4中一个类就是一个实体，但是不是所有的类都可以作为实体编译运行的，只有继承自Actor的类才可以作为一个实体存在，而直接继承自UObject的类则无法直接编译运行，那么我们应该如何让这种情况的类在引擎里编译运行呢？
-
-此时UE4的蓝图类便显现出效果了，什么是蓝图类？<font color=red>蓝图类就类似于Unity中阉割版的预设</font>，任何一个类都可以被创建对应的蓝图类。但是要创建蓝图类还需要做几步操作，我们要想要某个类能被创建蓝图类，那么我们就需要使用UCLASS(Blueprint)在类前说明，编译之后便可以在对应的类对象上右键创建蓝图类，否则创建蓝图类的按钮是非激活状态。
-
-如：
-
-```C++
-UCLASS()
-class ARP_04_API UTest : public UObject
-{
-	GENERATED_BODY()
-	
-};
-```
-
-Test类没有声明`UCLASS(Blueprint)`，所以类Test无法创建蓝图类
-
-![](【UE4】UE4基础/Snipaste_2019-10-17_13-30-29.png)
-
-```C++
-UCLASS(Blueprintable)
-class ARP_04_API UUObj : public UObject
-{
-	GENERATED_BODY()
-
-public:
-	UUObj();
-	UPROPERTY(BlueprintReadWrite)
-	int UObjInt;
-	UFUNCTION(BlueprintCallable)
-	void UObjPrint();
-};
-```
-
-UObj类声明了`UCLASS(Blueprint)`，所以UObj类创建蓝图类的按钮是激活的
-
-![](【UE4】UE4基础/Snipaste_2019-10-17_13-30-49.png)
-
-除此之外，我们若想要让类里面的变量和函数也能被蓝图类使用，我同时还需要在变量前指定`UPROPERTY(BlueprintReadWrite)`，在函数前指定`UFUNCTION(BlueprintCallable)`，就如上面的实例代码一样。
-
-UPROPERTY(BlueprintReadWrite)里的参数不是唯一的，<font color=red> BlueprintReadWrite表示成员变量在蓝图类里可读写，BlueprintReadOnly表示成员变量在蓝图类里只读，BlueprintWriteOnly表示成员变量在蓝图类里只写</font>。
-
-经过以上步骤我们的继承自UObject类的类便可以通过对应的蓝图类在关卡蓝图中使用了，使用BeginPlay节点开始程序，使用Construct节点来实例化我们的蓝图类，通过实例化出来的对象便可调用类中的资源了。如：
-
-![](【UE4】UE4基础/Snipaste_2019-10-17_13-46-52.png)
 
 
-
-# 七、UE4宏
+# 七、宏
 
 UE4中提供大量的宏于开发者使用，这些宏的作用就类似库函数一般。只是需要注意的是，有的宏末尾没有“；”而有的宏末尾需要加“；”，在下面的书写中需要“；”的宏我就直接在末尾加“；”，不需要的则不加。UE4不人性化的一点是很多宏里面的参数在VS中没有提示，也没有颜色变化，更不会提示错误，所以在给宏添加参数时尤其要注意书写正确。
 
@@ -686,7 +703,13 @@ UE_LOG(LogTemp, Error, TEXT("%s"),*str);
 
 <font color=red> 使用*str是因为FString是UE4的封装类，定义的FString对象都是指针。</font>
 
-## 2.UCLASS()/UPROPERTY()/UFUNCTION()
+## 2.TEXT()
+
+TEXT()宏是UE4用于字符串转码用的，不使用TEXT()宏的字符串将会使用ASNI编码，而FString可以直接使用字符串赋值是因为FString内部已经对字符串进行了编码处理。
+
+<font color=red> 需要注意的是TEXT()宏不支持中文，如果转码中文UE4在编译时会报错。</font>
+
+## 3.UCLASS()/UPROPERTY()/UFUNCTION()
 
 **作用**
 
@@ -787,38 +810,38 @@ UPROPRETY(meta=(ClampMin=-5.0f,ClampMax=5.0f,UIMin=-5.0f,UIMax=5.0f))
 
 ### UFUNCTION()宏的参数
 
-| 参数                                            | 作用                                                         |
-| ----------------------------------------------- | ------------------------------------------------------------ |
-| **BlueprintAuthorityOnly**                      | 如果在具有网络权限的计算机（服务器，专用服务器或单人游戏）上运行，此功能只能从Blueprint代码执行,如无网络权限，则该函数将不会从蓝图代码中执行 |
-| **BlueprintCallable**                           | 该函数可以在蓝图或关卡蓝图图表中执行                         |
-| **BlueprintCosmetic**                           | 此函数为修饰函数而且无法运行在专属服务器上                   |
-| **BlueprintGetter**                             | 修饰自定义的Getter函数专用，该函数将用作Blueprint暴露属性的访问器。这个说明符意味着BlueprintPure和BlueprintCallable。参考：https://blog.csdn.net/u012793104/article/details/78480085 |
-| **BlueprintSetter**                             | 修饰自定义的Setter函数专用，此函数将用作Blueprint暴露属性的增变器。这个说明符意味着BlueprintCallable。参考：https://blog.csdn.net/u012793104/article/details/78480085 |
-| **BlueprintImplementableEvent**                 | <font color=red>此函数可以在蓝图或关卡蓝图图表内进行重载*不能修饰private级别的函数，函数在C++代码中不需要实现定义*</font> |
-| **BlueprintInternalUseOnly**                    | 表示该函数不应该暴露给最终用户                               |
-| **BlueprintNativeEvent**                        | 此函数将由蓝图进行重载，但同时也包含native类的执行。提供一个名称为[FunctionName]_Implementation的函数本体而非[FunctionName];自动生成的代码将包含转换程序,此程序在需要时会调用实施方式 |
-| **BlueprintPure**                               | 该函数不会以任何方式影响拥有对象，并且可以在蓝图或级别蓝图图表中执行 |
-| **CallInEditor**                                | 该函数可以在编辑器中通过详细信息面板中的按钮在选定实例中调用 |
-| **Category** = "TopCategory`|`SubCategory\|..." | 指定函数在编辑器中的显示分类层级，`|`是分层级的符号          |
-| **Client**                                      | 此函数仅在该函数从属对象所从属的客户端上执行。提供一个名称为[FunctionName]_Implementation的函数主体，而不是[FunctionName]; 自动生成的代码将包含一个转换程序来在需要时调用实现方法 |
-| **CustomThunk**                                 | UnrealHeaderTool（虚幻头文件工具）的代码生成器将不会为此函数生成execFoo转换程序; 可由用户来提供 |
-| **Exec**                                        | 此函数可从游戏中的控制台中执行。Exec命令仅在特定类中声明时才产生作用,此标记修饰的函数应在可以接受输入的类中，才能正常接受命令 |
-| **NetMilticast**                                | 无论角色的NetOwner如何，该函数都在服务器上本地执行并复制到所有客户端 |
-| **Reliable**                                    | Reliable函数在网络间进行复制，并会忽略带宽或网络错误而被确保送达。仅在与客户端或服务器共同使用时可用 |
-| **UnReliable**                                  | UnReliable函数在网络间复制，但可能会由于带宽限制或网络错误而传送失败。仅在与客户端或服务器一起使用时有效 |
-| **SealeEvent**                                  | 这个函数不能在子类中重写。 SealedEvent关键字只能用于事件。对于非事件函数，声明它们是static的还是final的来封闭它们 |
-| **ServiceRequest**                              | ServiceRequest函数是一个RPC服务请求                          |
-| **ServiceResponse**                             | ServiceResponse函数是一个RPC服务响应                         |
-| **Server**                                      | 此函数仅在服务器上执行。提供一个名称为[FunctionName]_Implementation的函数主体，而不是[FunctionName]; 自动生成的代码将包含一个转换程序来在需要时调用实现方法 |
-| **WithValidation**                              | 声明一个名为与main函数相同的附加函数，但将_Validation添加到最后。该函数采用相同的参数，并返回一个布尔值来指示是否应该继续调用主函数 |
+| 参数                                                   | 作用                                                         |
+| ------------------------------------------------------ | ------------------------------------------------------------ |
+| **BlueprintAuthorityOnly**                             | 如果在具有网络权限的计算机（服务器，专用服务器或单人游戏）上运行，此功能只能从Blueprint代码执行,如无网络权限，则该函数将不会从蓝图代码中执行 |
+| **BlueprintCallable**                                  | 该函数可以在蓝图或关卡蓝图图表中执行                         |
+| **BlueprintCosmetic**                                  | 此函数为修饰函数而且无法运行在专属服务器上                   |
+| **BlueprintGetter**                                    | 修饰自定义的Getter函数专用，该函数将用作Blueprint暴露属性的访问器。这个说明符意味着BlueprintPure和BlueprintCallable。参考：https://blog.csdn.net/u012793104/article/details/78480085 |
+| **BlueprintSetter**                                    | 修饰自定义的Setter函数专用，此函数将用作Blueprint暴露属性的增变器。这个说明符意味着BlueprintCallable。参考：https://blog.csdn.net/u012793104/article/details/78480085 |
+| **<font color=red>BlueprintImplementableEvent</font>** | 此函数可以在蓝图或关卡蓝图图表内进行重载*不能修饰private级别的函数，函数在C++代码中不需要实现定义* |
+| **BlueprintInternalUseOnly**                           | 表示该函数不应该暴露给最终用户                               |
+| **BlueprintNativeEvent**                               | 此函数将由蓝图进行重载，但同时也包含native类的执行。提供一个名称为[FunctionName]_Implementation的函数本体而非[FunctionName];自动生成的代码将包含转换程序,此程序在需要时会调用实施方式 |
+| **BlueprintPure**                                      | 该函数不会以任何方式影响拥有对象，并且可以在蓝图或级别蓝图图表中执行 |
+| **CallInEditor**                                       | 该函数可以在编辑器中通过详细信息面板中的按钮在选定实例中调用 |
+| **Category** = "TopCategory`|`SubCategory\|..."        | 指定函数在编辑器中的显示分类层级，`|`是分层级的符号          |
+| **Client**                                             | 此函数仅在该函数从属对象所从属的客户端上执行。提供一个名称为[FunctionName]_Implementation的函数主体，而不是[FunctionName]; 自动生成的代码将包含一个转换程序来在需要时调用实现方法 |
+| **CustomThunk**                                        | UnrealHeaderTool（虚幻头文件工具）的代码生成器将不会为此函数生成execFoo转换程序; 可由用户来提供 |
+| **Exec**                                               | 此函数可从游戏中的控制台中执行。Exec命令仅在特定类中声明时才产生作用,此标记修饰的函数应在可以接受输入的类中，才能正常接受命令 |
+| **NetMilticast**                                       | 无论角色的NetOwner如何，该函数都在服务器上本地执行并复制到所有客户端 |
+| **Reliable**                                           | Reliable函数在网络间进行复制，并会忽略带宽或网络错误而被确保送达。仅在与客户端或服务器共同使用时可用 |
+| **UnReliable**                                         | UnReliable函数在网络间复制，但可能会由于带宽限制或网络错误而传送失败。仅在与客户端或服务器一起使用时有效 |
+| **SealeEvent**                                         | 这个函数不能在子类中重写。 SealedEvent关键字只能用于事件。对于非事件函数，声明它们是static的还是final的来封闭它们 |
+| **ServiceRequest**                                     | ServiceRequest函数是一个RPC服务请求                          |
+| **ServiceResponse**                                    | ServiceResponse函数是一个RPC服务响应                         |
+| **Server**                                             | 此函数仅在服务器上执行。提供一个名称为[FunctionName]_Implementation的函数主体，而不是[FunctionName]; 自动生成的代码将包含一个转换程序来在需要时调用实现方法 |
+| **WithValidation**                                     | 声明一个名为与main函数相同的附加函数，但将_Validation添加到最后。该函数采用相同的参数，并返回一个布尔值来指示是否应该继续调用主函数 |
 
 UFUNCTION()宏也提供了元数据说明符，元数据说明符可以对参数做一些限制，这里不再列出，详细的说明参官方文档： https://docs.unrealengine.com/zh-CN/Programming/UnrealArchitecture/Reference/Metadata/index.html 
 
-## 3.GENERATED_BODY()
+## 4.GENERATED_BODY()
 
 GENERATED_BODY()宏标识的类表示，此类不可以使用父类的声明，最常见的就是GENERATED_BODY标识的类必须要自己声明和实现无参构造函数，否则编译将无法通过。
 
-## 4.GENERATED_UCLASS_BODY()
+## 5.GENERATED_UCLASS_BODY()
 
 GENERATED_UCLASS_BODY()宏标识的类表示此类继承父类的声明，最常见的就是GENERATED_UCLASS_BODY()标识的类不需要声明构造函数，如果需要重写构造函数，则必须为构造函数传递FObjectInitializer类的常量引用，这也是为什么我们经常在UE4编程中看见如下代码的缘故
 
@@ -838,7 +861,7 @@ UMySQLDatabase::UMySQLDatabase(const FObjectInitializer& ObjectInitializer)
 
 ## 1.FString
 
-FString是UE4C++编程中极其常用的一个UE4字符串封装类型，所以这里单独打出来讲一讲。
+FString是UE4C++编程中极其常用的一个UE4字符串封装类型，是UE4自带字符串类型中唯一可以进行各种字符串操作的字符串类型，同时FString的资源消耗也是最大的。
 
 ### FString初始化
 
@@ -956,9 +979,23 @@ FString fstr = RotatorVariable.ToString();
 FString fstr = (InObj != NULL)?InObj->GetName():FString(TEXT("None"));
 ```
 
+## 2.FName
 
+FName也是UE4自带的字符串类型，FName是不区分大小写的且FName在UE4中，赋予FName的字符串会被存放到UE4的数据表中，多个FName赋予相同的字符串时都会指向同一个数据表地址。FName被赋值之后不可改变也不能被操作，FName的不可改变的性质和C++的string类很相似，因为FName的这些性质是的FName的查找和访问非常快。
 
-# **八、UE4的碰撞**检测
+- FName的初始化
+
+```C++
+FName fn1 = FName(TEXT("str"));
+FName fn2 = FName("str");
+FName fn3 = "str";
+```
+
+## 3.FText
+
+FText是一个FString的升级版字符串，存储容量比FString要大很多，主要用于UE4的文本存储与处理。
+
+# 八、UE4的碰撞检测
 
 ## 1.添加碰撞体
 
@@ -1005,12 +1042,8 @@ UE4提供多种生成碰撞体的方法
 | UStaticComponent     | 静态网格组件     |
 | UCameraComponent     | 相机组件         |
 
-# TEXT()不能输出中文，否则编译无法通过
 
-# 自己创建的结构体无法暴漏给蓝图？
 
-# TActorIterator<AMysqlConnector> it(GetWorld());
-
-# UE4定义命名空间则无法打开.generated.h文件
+# Actor和Object迭代器
 
 # UE4共享指针
