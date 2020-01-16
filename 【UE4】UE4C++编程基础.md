@@ -479,7 +479,11 @@ Controller是漂浮在 Pawn/Character之上的灵魂。它操纵着Pawn和 Chara
 
 ![](【UE4】UE4基础/Snipaste_2019-10-16_10-06-16.png)
 
-上图有一个要注意的地方，我们在创建类是可以选择后面的公有与私有，或者都不选，选择公有或私有都会在创建一个C++Class/ProjectName文件夹下创建一个Public文件夹存放我们创建的类，而在VS中则会创建一个public文件夹存放.h文件，创建一个private文件夹存放.cpp文件，如果都不选，则.cpp和.h文件都存放在Source文件夹下。
+上图有一个要注意的地方，我们在创建类时可以选择后面的公有与私有，或者都不选，
+
+- 选择公有，UE4会在C++Class/ProjectName文件夹下创建一个Public文件夹存放我们创建的类，而在VS中则会创建一个public文件夹存放.h文件，创建一个private文件夹存放.cpp文件；
+- 选择私有，UE4会在C++Class/ProjectName文件夹下创建一个Public文件夹存放我们创建的类，而在VS中则将.h和.cpp都存放在private文件下；
+- 如果都不选，则我们创建的类直接存放在C++Class/ProjectName文件夹下，而VS中.cpp和.h文件都存放在Source文件夹下，但是如果都不选，那么类与类之间会出现访问权限问题，目前发现这种结构的文件中类与类之间仅可以访问成员变量而不能访问成员函数，无论是静态成员函数还是非静态成员函数都无法互相访问。
 
 ![](【UE4】UE4基础/Snipaste_2019-10-16_10-07-00.png)
 
@@ -516,7 +520,7 @@ VS中的工程目录的Source目录下的目录结构有两种：
 
 - <font color=orange> UE4中类的成员变量如果直接在类中初始化，类的实例化对象中该成员依然使没有初始化，只有在构造函数中对类的成员变量作的初始化在类的实例中才会被初始化。不知道UE4为什么会有这种现象，在C++中是没有这种现象的。</font>
 
-- <font color=orange> 在我们创建类时时长会碰到.generated.h文件莫名奇妙的就无法打开了，这是我们只需要切换以下VS的编辑模式到DebugGame Editor就可以了。</font>
+- <font color=orange> 在我们创建类时时长会碰到.generated.h文件莫名奇妙的就无法打开了，有一种情况下会出现这种问题，就是我们在一个项目中创建类的权限不一致时，比如有的类在创建时没有设定权限，有的给Public权限或是Private权限，![](【UE4】C++编程基础/Snipaste_2019-11-28_11-37-15.png)这时我们只能把所有的类归到一个权限下才可以解决，所以在一个项目中所有类的权限最好只是用一种，要么都不给要么都给Public要么都给Private，但有的时候即使不这种情况也会出现.generated.h打不开，这时我们只需要切换以下VS的编辑模式到DebugGame Editor就可以了。</font>
 
   ![](【UE4】C++编程基础/Snipaste_2019-11-27_19-30-13.png)
 
@@ -550,13 +554,13 @@ UE4为一些常用类的命名添加了一些命名前缀，<font color=red> �
 
 - 如果是一个继承自UObject但又不继承只Actor的类，那么我们需要使用<font color=red>`NewObject<T>()`</font>函数来实例化类对象；
 
-- 如果是一个继承只Actor类的类，那么我们需要使用我们需要使用UWorld对象中的SpawnActor函数来实例化，调用方式为：<font color=red> `GetWorld()->SpawnActor<T>()`， `GetWorld()->SpawnActor<T>()`不可以在构造函数中使用，如果直接在构造函数中使用UE4在编译时会直接崩溃</font>；
+- 如果是一个继承只Actor类的类，那么我们需要使用我们需要使用UWorld对象中的SpawnActor函数来实例化，调用方式为：<font color=red> `GetWorld()->SpawnActor<T>()`， `GetWorld()->SpawnActor<T>()`不可以在构造函数中使用，如果直接在构造函数中使用UE4在编译时会直接崩溃，并且在UObject类中也不能使用，因为使用SpawnActor需要GetWorld，而UObject不在世界中存在，是无法GetWorld的</font>；
 
   ![](【UE4】C++编程基础/Snipaste_2019-11-27_18-16-57.png)
 
 - 如果我们需要产出一个Slate类，那么我们需要使用<font color=red> SNew()</font>函数来实例化。
 
-<font color=red> 这里需要注意的是，当在一个类中实例化另一个类的对象时最好不要构造函数中实例化，尽管NewObject可以在构造函数中使用，并且也可以实例化出对象来，但是如果被实例化的类中包含FString类型的成员变量时，这个对象对FString类型的成员的访问会出现错误，其他的基础数据类型却可以正常访问，具体原因不详。</font>
+<font color=red>这里需要注意的是，当在一个类中实例化另一个类的对象时最好不要构造函数中实例化，尽管NewObject可以在构造函数中使用，并且也可以实例化出对象来，但是如果被实例化的类中包含FString类型的成员变量时，这个对象对FString类型的成员的访问会出现错误，其他的基础数据类型却可以正常访问，具体原因不详。</font>
 
 ![](【UE4】C++编程基础/Snipaste_2019-11-27_19-15-20.png)
 
@@ -609,6 +613,71 @@ UPROPERTY(BlueprintReadWrite)里的参数不是唯一的，<font color=red> Blue
 经过以上步骤我们的继承自UObject类的类便可以通过对应的蓝图类在关卡蓝图中使用了，使用BeginPlay节点开始程序，使用Construct节点来实例化我们的蓝图类，通过实例化出来的对象便可调用类中的资源了。如：
 
 ![](【UE4】UE4基础/Snipaste_2019-10-17_13-46-52.png)
+
+# 五、共享指针
+
+UE4的共享指针存在和C++的智能指针原理和作用基本一致，UE4的共享指针存在的主要目的就是作用于UE4的跨平台。
+
+UE4共享指针的特性：
+
+- 防止内存溢出；
+- 有线程安全机制；
+- 可虚拟化任何对象；
+- 负载小，内存占用为原生C++指针的两倍。
+
+UE4共享指针共有TSharedPtr、TSharedRef、TWeakPtr、TAutoPtr四种。
+
+## TSharedPtr
+
+- <font color=red> TSharedPtr不能指向UObject类，因为UObject类有自己的一套垃圾回收机制，而TSharedPtr也有自己的一套垃圾回收机制，如果使用TSharedPtr指向一个UObject类，当UObject自己回收后，会出现指针不为空，但是对象却被销毁了，所以在指针销毁对象的时候就会出现销毁不存在对象，而导致引擎崩溃。</font>
+
+**声明**
+
+```C++
+TSharedPtr<MyClass> emptyPtr;//单独声明出来的共享指针为空指针
+```
+
+**初始化**
+
+```C++
+TSharedPtr<MyClass> onePtr(new MyClass());
+//唯一的初始化方式，TSharedPtr不支持直接赋值的初始化，如：
+//TharedPtr<MyClass> onePtr;
+//onePtr = new Class();
+//这样的初始化是错误的
+```
+
+**复制**
+
+```C++
+TSahredPtr<MyClass> twoPtr = onePtr;//指针复制，引用计数器+1
+```
+
+**查看一块内存的引用计数**
+
+```C++
+TSharedPtr<T>::GetSharedReferenceCount()
+```
+
+<font color=red> 一块内存只能被一个TSharedPtr指针初始化，如果一块内存被多个SharedPtr引用，UE4会在编译时直接崩溃，比如下面代码：</font>
+
+```C++
+UMyObject *obj = NewObject<UMyObject>();
+TSharedPtr<UMyObject> onePtr(obj);
+TSharedPtr<UMyObject> twoPtr(obj);
+```
+
+<font color=red> 如果想要多个TSharedPtr指针指向一块内存地址，则需要使用TSharedPtr复制。</font>
+
+
+
+**解除TSharedPtr的引用**
+
+```
+
+```
+
+
 
 # 五、反射和垃圾回收
 
@@ -760,7 +829,7 @@ TEXT()宏是UE4用于字符串转码用的，不使用TEXT()宏的字符串将�
 | **AssetRegistrySearchable**                      | 表明此属性及其值将会为任意将其作为成员变量而包含的资源类示例被自动添加到资源注册中。不可用于结构体属性或参数 |
 | **BlueprintAssignable**                          | 仅能用于Multicast代理。应显示该属性，以供在蓝图中分配        |
 | **BlueprintCallable**                            | 仅能用于Multicast代理。应显示该属性，以在蓝图代码中调用      |
-| **BluprintReadOnly**                             | 设置属性为蓝图只读。会在蓝图脚本中为被修饰的变量提供 Get 方法，没有 Set 方法 |
+| **BlueprintReadOnly**                            | 设置属性为蓝图只读。会在蓝图脚本中为被修饰的变量提供 Get 方法，没有 Set 方法 |
 | **BlueprintReadWrite**                           | 设置属性为蓝图读写。会在蓝图脚本中为被修饰的变量提供 Get 和 Set 方法 |
 | **BlueprintGetter**                              | 指定一个自定义存取器函数。如果这个属性没有被标记为BlueprintSetter或者BlueprintReadWrite，那么它就是隐式的BlueprintReadOnly。用法：`BlueprintGetter = GetterFunctionName()` |
 | **BlueprintSetter**                              | BlueprintSetter属性有一个自定义的mutator函数，并用BlueprintReadWrite隐式标记。注意，必须指定mutator函数，用法`BlueprintSetter = SetterFunctionName` |
@@ -853,7 +922,7 @@ UMySQLDatabase::UMySQLDatabase(const FObjectInitializer& ObjectInitializer)
 }
 ```
 
-其中Super()y用于给父类传递参数
+其中Super()用于给父类传递参数
 
 <font color=red> GENERATED_BODY()和GENERATED_UCLASS_BODY()宏都会为其标识的类生成一些成员函数，只是二者在使用权限上有一些区别，具体生成了什么成员函数及其区别由于目前自己搜索到的资料过少，暂时无法弄明白，需要以后慢慢研究</font>。
 
@@ -1042,8 +1111,8 @@ UE4提供多种生成碰撞体的方法
 | UStaticComponent     | 静态网格组件     |
 | UCameraComponent     | 相机组件         |
 
+# TArray数组
 
+# 生成组件
 
-# Actor和Object迭代器
-
-# UE4共享指针
+# static TMap的静态变量
