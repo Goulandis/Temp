@@ -669,8 +669,6 @@ TSharedPtr<UMyObject> twoPtr(obj);
 
 <font color=red> 如果想要多个TSharedPtr指针指向一块内存地址，则需要使用TSharedPtr复制。</font>
 
-
-
 **解除TSharedPtr的引用**
 
 ```
