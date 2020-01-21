@@ -13,4 +13,4 @@ taskkill /f /im cmd.exe
 ```
 
 - echo on：
-- start "C:\Windows\System32\cmd.exe"
+- start "C:\Windows\System32\cmd.exe"：
