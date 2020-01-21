@@ -27,5 +27,3 @@ taskkill /f /im cmd.exe
 ![](【BAT】BATWindows自动脚本同步GitHub远程仓库\Snipaste_2020-01-21_16-04-19.png)
 
 如果自动脚本很多的话，有一种更便捷的方法，就是专门为自动脚本创建一个文件夹，然后将其路径添加进环境变量中
-
-asd
